@@ -57,19 +57,19 @@ class ConvolutionDiagonalization(Scene):
         shift_text = Text("2. Basis Change (Fourier Matrix)", font_size=32).move_to(conv_text.get_center())
         self.play(Write(shift_text))
 
-        # 行列の成分表示（omegaを使った正確な表現）
+        # 行列の成分表示（ω^(i·j)形式で(i,j)成分を明示）
         f_matrix_comp = MathTex(
             "F = \\begin{bmatrix} "
-            "1 & 1 & \\cdots & 1 \\\\ "
-            "1 & \\omega & \\cdots & \\omega^{n} \\\\ "
+            "\\omega^{0 \\cdot 0} & \\omega^{0 \\cdot 1} & \\cdots & \\omega^{0 \\cdot n} \\\\ "
+            "\\omega^{1 \\cdot 0} & \\omega^{1 \\cdot 1} & \\cdots & \\omega^{1 \\cdot n} \\\\ "
             "\\vdots & \\vdots & \\ddots & \\vdots \\\\ "
-            "1 & \\omega^{n} & \\cdots & \\omega^{n^2} "
+            "\\omega^{n \\cdot 0} & \\omega^{n \\cdot 1} & \\cdots & \\omega^{n \\cdot n} "
             "\\end{bmatrix} "
             "\\quad \\left( \\omega = e^{i \\frac{2\\pi}{n+1}} \\right)"
-        ).scale(0.7).move_to(ORIGIN).shift(UP * 0.2)
+        ).scale(0.65).move_to(ORIGIN).shift(UP * 0.2)
 
         # 背景のボックスで読みやすくする
-        f_box = SurroundingRectangle(f_matrix_comp, color=WHITE, fill_color=BLACK, fill_opacity=0.9, buff=0.3)
+        f_box = SurroundingRectangle(f_matrix_comp, color=WHITE, fill_color=BLACK, fill_opacity=0.9, buff=0.28)
 
         self.play(Create(f_box), Write(f_matrix_comp))
         self.wait(3.5)
@@ -172,11 +172,11 @@ class ConvolutionDiagonalization(Scene):
         ).scale(0.6).move_to(ORIGIN).shift(UP * 0.7)
 
         conv_derivation_2 = MathTex(
-            "\\text{Since } v_k \\text{ is an eigenvector: } S^j v_k = \\lambda_k^j v_k"
+            "\\text{Since } v_k \\text{ is an eigenvector: } S^j v_k = \\omega^{kj} v_k"
         ).scale(0.6).next_to(conv_derivation_1, DOWN, buff=0.25)
 
         conv_derivation_3 = MathTex(
-            "\\Rightarrow C_p(v_k) = \\left( \\sum_{j=0}^n p_j \\lambda_k^j \\right) v_k = \\hat{p}_k v_k"
+            "\\Rightarrow C_p(v_k) = \\left( \\sum_{j=0}^n p_j \\omega^{kj} \\right) v_k = \\hat{p}_k v_k"
         ).scale(0.6).next_to(conv_derivation_2, DOWN, buff=0.25)
 
         conv_derivation_4 = MathTex(
@@ -185,7 +185,7 @@ class ConvolutionDiagonalization(Scene):
 
         derivation_group = VGroup(conv_derivation_1, conv_derivation_2, conv_derivation_3, conv_derivation_4)
         # d_box 自体も少し小さくして F の文字や括弧との重なりを回避
-        d_box = SurroundingRectangle(derivation_group, color=WHITE, fill_color=BLACK, fill_opacity=0.9, buff=0.28)
+        d_box = SurroundingRectangle(derivation_group, color=WHITE, fill_color=BLACK, fill_opacity=0.9, buff=0.28, stroke_width=2)
 
         # C_p に関する補足説明
         c_p_circle = Ellipse(width=conv_derivation_1[1].width * 1.5, height=conv_derivation_1[1].height * 1.5, color=YELLOW).move_to(conv_derivation_1[1])
